@@ -1,0 +1,13 @@
+{
+  "scripts": {
+	"dev": "nodemon index.js",
+	"build: "node index.js"
+  },
+  "name": "Sites",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^1.15.0"
+  }
+}
