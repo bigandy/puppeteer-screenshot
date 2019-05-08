@@ -5,8 +5,8 @@ let sites = require('./sites');
 
 if (process.argv[2] !== 'undefined' && process.argv[2] !== '--prod') {
 	sites = [sites[0]];
-} else {
-	sites = sites.slice(0, 50);
+// } else {
+	// sites = sites.slice(0, 50);
 }
 
 console.log(sites);
