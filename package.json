@@ -1,9 +1,9 @@
 {
+  "name": "puppeteer-get-screenshots-from-slugs",
   "scripts": {
-	"dev": "nodemon index.js",
-	"build: "node index.js"
+    "dev": "nodemon index.js",
+    "build": "node index.js --prod"
   },
-  "name": "Sites",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
