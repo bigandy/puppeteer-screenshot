@@ -15,7 +15,7 @@ const base = "https://brokernotes.co";
 const width = 1280;
 const height = 786;
 
-const work = async ({ broker }) => {
+const work = async ({ broker, url }) => {
   broker = broker.toLowerCase().replace(" ", "");
 
   try {
@@ -23,7 +23,7 @@ const work = async ({ broker }) => {
     const browser = await puppeteer.launch({ dumpio: true });
     const page = await browser.newPage();
 
-    await page.goto(`${base}/visit/${broker}vs/`, {
+    await page.goto(url, {
       waitUntil: "networkidle2"
     });
 
