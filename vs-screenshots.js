@@ -1,42 +1,40 @@
-const puppeteer = require('puppeteer');
+const puppeteer = require("puppeteer");
 
-let sites = require('./sites');
-// process.setMaxListeners(Infinity); // <== Important line
+let pages = require("./config/vs-pages");
 
-if (process.argv[2] !== 'undefined' && process.argv[2] !== '--prod') {
-	sites = [sites[0]];
-// } else {
-	// sites = sites.slice(0, 50);
+if (process.argv[2] !== "undefined" && process.argv[2] !== "--prod") {
+  pages = [pages[0]];
+  // } else {
+  // pages = pages.slice(0, 50);
 }
 
-console.log(sites);
+console.log(pages);
 
-
-const base = 'https://brokernotes.co';
+const base = "https://brokernotes.co";
 
 const width = 480;
 const height = 270;
 
-const work = async (site) => {
+const work = async site => {
   try {
     const browser = await puppeteer.launch({ dumpio: true });
     const page = await browser.newPage();
-	await page.setViewport({
-		width,
-		height,
-		isMobile: true,
-	});
-    await page.goto(`${base}/${site}/`, { waitUntil: 'networkidle2' });
+    await page.setViewport({
+      width,
+      height,
+      isMobile: true
+    });
+    await page.goto(`${base}/${site}/`, { waitUntil: "networkidle2" });
 
-	await page.addScriptTag({
-		content: `
+    await page.addScriptTag({
+      content: `
 			const images = document.querySelectorAll('th img');
 			images.forEach(image => image.src = image.src.replace('q_auto:best,f_auto,w_38/', ''));
-		`,
-	})
+		`
+    });
 
-	await page.addStyleTag({
-		content: `th {
+    await page.addStyleTag({
+      content: `th {
 			border: 0;
 		}
 
@@ -96,56 +94,29 @@ const work = async (site) => {
 			// background-position: 50% 50%;
 		}
 		`
-	});
+    });
 
-
-	const table = await page.$('table');
-	await table.screenshot({
-		path: `images/${site}.png`,
-		clip: {
-			x: 0,
-			y: 28,
-			height: 260,
-			width,
-		},
-		omitBackground: true,
-	});
+    const table = await page.$("table");
+    await table.screenshot({
+      path: `images/vs-screenshots/${site}.png`,
+      clip: {
+        x: 0,
+        y: 28,
+        height: 260,
+        width
+      },
+      omitBackground: true
+    });
     browser.close();
   } catch (err) {
     console.log(err.message);
   } finally {
-    if (sites.length) {
-      work(sites.pop());
+    if (pages.length) {
+      work(pages.pop());
     } else {
       process.exit();
     }
   }
 };
 
-work(sites.pop());
-
-
-// const screenShotSite = async (site) => {
-// 		try {
-
-
-
-
-// 			await browser.close();
-// 			resolve('success');
-
-// 		} catch(e) {
-// 			console.error(e);
-// 			reject(e);
-// 		}
-// 	});
-// };
-
-
-// for (let i = 0; i < sites.length; i++) {
-// 	try {
-// 		screenShotSite(sites[i]);
-// 	} catch(e) {
-// 		console.error('error in ', sites[i]);
-// 	}
-// }
+work(pages.pop());
